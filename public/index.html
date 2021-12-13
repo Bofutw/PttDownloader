@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="js/jquery.js"></script>
+    <!-- <script src="../js/bootstrap.min.js"></script> -->
+    <script type='text/javascript' src='js/ajax_concept.js'></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>Ptt-Downloader</title>
+</head>
+
+<body class="bg-light">
+    <div class="mx-auto container m-5  w-25">
+
+        <img src="key.png" alt="" class="mx-auto d-block" width="25%">
+
+            <div class="mt-3 mb-3">
+            <h3 class="text-center">Ptt-Downloader</h3>
+        </div>
+
+        <form>
+        <div class="form-floating mt-3">
+            <input type="url " class="form-control" id="account" placeholder="Enter account" name="account" pattern="https://.*" required>
+            <label for="account">請輸入任意 Ptt 網址</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="textres" placeholder="Enter account" name="textres" disabled>
+        <label for="textres" id='resultSpan'>控制台：等待輸入</label>
+         </div>
+
+        <div class="d-grid bg-warning mb-3" id="add">
+            <button type="button" class="btn btn-primary btn-block" id="button-dl">送出</button>
+        </div>
+        
+        </form>
+
+        <!-- <span id='resultSpan'></span> -->
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            
+            $("#button-dl").on("click", async function() {
+            // $("#button-dl").submit(async function() {    
+                $("#button-dl").prop("disabled","disabled")
+                $("#button-dl").text(" 處理中...")
+                $("#resultSpan").text("控制台：正在接收數據")
+                
+                setTimeout($("#resultSpan").text("控制台：爬蟲中..."),2000);
+                // setTimeout($("#resultSpan").text("控制台：爬蟲中.."),4000);
+                // setTimeout($("#resultSpan").text("控制台：爬蟲中..."),6000);
+                // setTimeout($("#resultSpan").text("控制台：下載中."),8000);
+                // setTimeout($("#resultSpan").text("控制台：下載中.."),10000);
+                setTimeout($("#resultSpan").text("控制台：下載中..."),4000);
+
+                $("#button-dl").prepend('<span class="spinner-border spinner-border-sm" id="newspan"></span>');
+                
+                var dataToServer = {
+                    account: $("#account").val()
+                }
+                
+                var aPromise = $.ajax({
+                    type: "post",
+                    url: "/test2",
+                    data: dataToServer,
+                    success: function(){
+                        $("#newspan").remove();
+                        $("#button-dl").text("送出")
+                        $("#account").val("")
+                        // window.location.replace("/get");
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                    },
+                    statusCode: {
+                        404: function() {
+                        alert( "page not found" );
+                        }
+                    }    
+                        
+                    
+                  });
+                                   
+                  var result = await aPromise;
+                  $("#button-dl").removeProp("disabled");
+                //   $("#resultSpan").text(result);
+                  if (result==="true"){
+                    window.location.replace("/get");
+                    $("#resultSpan").text("控制台：下載成功！");
+                  }else{
+                    $("#resultSpan").text("控制台：下載失敗！");
+                  }
+                  
+                  
+             
+            // $(".nav-tabs a").click(function() {
+            //     $(this).tab('show');
+            // });
+
+            // $("#getButton").on("click", function() {
+            //   var s = $("#nameTextBox").val();
+
+            //     $.get("/hello/" + s, function(e) {
+            //         $("#reportSpan").text(e);
+            //     })
+            // })    
+
+            //       $("#add").append(
+            //       '<div class="d-grid bg-warning"><button type="button" class="btn btn-primary btn-block" id="button-dlcheck">下載</button></div>'
+            //       );        
+            //       $("#button-dl").prop("disabled",true);
+
+            //       $("#button-dlcheck").on("click", async function(){
+            //         window.location.replace("/get")
+
+            //         // $.get("./get",(ok)={
+            //         //     if(ok){
+            //         //         console.log("ok");
+            //         //     }
+            //         // })
+            // })     
+                                        
+            })
+               
+           
+        });
+    </script>
+</body>
+
+<footer >
+     <p class="text-center"> © 2021–2022 Bofu Studio.</p>
+</footer>
+</html>
