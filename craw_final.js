@@ -29,7 +29,7 @@ async function main () {
     })
     console.log("*-*-*-*-*-*-*-爬蟲開始*-*-*-*-*-*-*-");
 
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     await page.goto(url, {waitUntil: 'networkidle2'});
 
@@ -73,7 +73,7 @@ async function main () {
         })
         req.end()
     await sleep(1000);
-    console.log(a+"：已經下載完成(～￣▽￣)～");
+    console.log(a+": 已經下載完成(～￣▽￣)～");
     }
     await sleep(3000);
     console.log("-*-*-*-*-*-*-*載圖程序結束-*-*-*-*-*-*-*");
