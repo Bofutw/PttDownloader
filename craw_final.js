@@ -32,8 +32,15 @@ async function main () {
     const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
     await page.goto(url, {waitUntil: 'networkidle2'});
-
     await page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'})
+
+    try{
+        await page.focus("[name=yes]");
+        (await page.$("[name=yes]")).click();
+        await page.waitForNetworkIdle();
+        }catch{
+            console.log("not 18x");
+    }
 
     var dataList = await page.evaluate( () => {
         const $ = window.$;
