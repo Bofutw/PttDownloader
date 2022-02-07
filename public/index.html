@@ -81,6 +81,8 @@
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) { 
                         alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                        $("#button-dl").removeProp("disabled");
+                        $("#resultSpan").text("控制台：下載失敗！");
                     },
                     statusCode: {
                         404: function() {
